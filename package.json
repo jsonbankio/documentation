@@ -1,0 +1,18 @@
+{
+  "name": "jsb-docs",
+  "version": "1.0.0",
+  "description": "Jsonbank Documentation",
+  "main": "index.js",
+  "repository": "https://github.com/jsonbankio/documentation",
+  "author": "helpdesk@trapcode.io",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs"
+  },
+  "devDependencies": {
+    "@vuepress/plugin-register-components": "^2.0.0-beta.42",
+    "vuepress": "^2.0.0-beta.42"
+  }
+}

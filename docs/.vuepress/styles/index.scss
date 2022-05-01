@@ -1,0 +1,25 @@
+body {
+  font-family: 'PT Sans', sans-serif;
+  font-size: 1.05em;
+}
+
+.code-group__nav-tab {
+  padding-left: 10px;
+  padding-right: 10px;
+  font-size: 0.9em;
+  font-weight: lighter;
+
+  &:hover {
+    color: var(--c-brand)
+  }
+
+  &.code-group__nav-tab-active {
+    color: var(--c-brand);
+    font-size: 0.95em;
+  }
+}
+
+.site-name.can-hide {
+  display: none
+}
+
