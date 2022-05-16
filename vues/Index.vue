@@ -64,6 +64,8 @@ function onLangClick(lang: Lang) {
 
     <div
       class="
+        max-w-4xl
+        mx-auto
         grid grid-col-1
         sm:grid-cols-2
         md:grid-cols-3
