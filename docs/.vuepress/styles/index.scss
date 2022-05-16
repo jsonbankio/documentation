@@ -1,25 +1,25 @@
+
+:root {
+  --c-brand: #5046E4;
+  --c-brand-dark: #483fcd;
+  --c-brand-light: 6259e7;
+}
+
+html.dark {
+  --c-brand: #5046E4;
+  --c-brand-dark: #483fcd;
+  --c-brand-light: 6259e7;
+}
+
+.no-sidebar {
+  --content-width: 100%;
+ }
+
+@import "../public/css/main";
+
+
 body {
   font-family: 'PT Sans', sans-serif;
   font-size: 1.05em;
-}
-
-.code-group__nav-tab {
-  padding-left: 10px;
-  padding-right: 10px;
-  font-size: 0.9em;
-  font-weight: lighter;
-
-  &:hover {
-    color: var(--c-brand)
-  }
-
-  &.code-group__nav-tab-active {
-    color: var(--c-brand);
-    font-size: 0.95em;
-  }
-}
-
-.site-name.can-hide {
-  display: none
 }
 
