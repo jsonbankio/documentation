@@ -10,7 +10,9 @@
   "scripts": {
     "docs:dev": "vuepress dev docs --port 2222",
     "docs:build": "vuepress build docs",
-    "css:watch": "npx tailwindcss -i ./docs/.vuepress/styles/tw.css -o ./docs/.vuepress/public/css/main.css --watch"
+    "build": "npm run css:build && npm run docs:build",
+    "css:watch": "npx tailwindcss -i ./docs/.vuepress/styles/tw.css -o ./docs/.vuepress/public/css/main.css --watch",
+    "css:build": "npx tailwindcss -i ./docs/.vuepress/styles/tw.css -o ./docs/.vuepress/public/css/main.css ----minify"
   },
   "devDependencies": {
     "@vuepress/plugin-register-components": "^2.0.0-beta.42",
