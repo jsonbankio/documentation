@@ -1,12 +1,17 @@
 <script setup lang="ts">
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 import Logo from "../components/Logo.vue";
+
+const $router = useRouter();
 
 type Lang = {
   name: string;
   icons: Array<string>;
   active?: boolean;
+  route?: string;
 };
+
 const languages = ref<Lang[]>([
   {
     name: "Javascript",
@@ -17,6 +22,7 @@ const languages = ref<Lang[]>([
       // "fa-brands fa-yarn",
     ],
     active: true,
+    route: "/sdks/Javascript/index.html",
   },
 
   {
@@ -34,6 +40,11 @@ const languages = ref<Lang[]>([
     icons: ["fa-brands fa-php", "fa-brands fa-laravel"],
   },
 ]);
+
+function onLangClick(lang: Lang) {
+  if (!lang.active) return;
+  $router.push(lang.route);
+}
 </script>
 
 <template>
@@ -63,6 +74,7 @@ const languages = ref<Lang[]>([
     >
       <template v-for="lang in languages">
         <div
+          @click.prevent="onLangClick(lang)"
           class="
             col-span-1
             text-center

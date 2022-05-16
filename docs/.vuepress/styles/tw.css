@@ -2,8 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
-.normal-headers h2 {
-    @apply border-0;
+
+.normal-headers h1,
+.normal-headers h2,
+.normal-headers h3,
+.normal-headers h4,
+.normal-headers h5,
+.normal-headers h6 {
+    @apply border-0 m-0;
 }
 
 .navbar .site-name {
@@ -18,14 +24,15 @@
 }
 
 .code-group__nav-tab:hover {
-    @apply text-indigo-600 dark:text-gray-200;
+    @apply text-indigo-500 dark:text-gray-200;
 }
 
 .code-group__nav-tab.code-group__nav-tab-active {
-    @apply text-indigo-600 dark:text-gray-200;
+    @apply text-indigo-200;
     font-size: 0.95em;
 }
 
-/*.site-name.can-hide {*/
-/*    display: none*/
-/*}*/
+
+.text-ts {
+    @apply text-blue-800 dark:text-blue-300;
+}
