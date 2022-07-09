@@ -1,25 +1,62 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
-  --c-brand: #5046E4;
+  --c-brand: #5046e4;
   --c-brand-dark: #483fcd;
   --c-brand-light: 6259e7;
 }
 
 html.dark {
-  --c-brand: #5046E4;
+  --c-brand: #5046e4;
   --c-brand-dark: #483fcd;
   --c-brand-light: 6259e7;
 }
 
 .no-sidebar {
   --content-width: 100%;
- }
-
-@import "../public/css/main";
-
+}
 
 body {
-  font-family: 'PT Sans', sans-serif;
+  font-family: "PT Sans", sans-serif;
   font-size: 1.05em;
 }
 
+.navbar .site-name {
+  @apply text-indigo-700 dark:text-gray-200;
+}
+
+.code-group__nav-tab {
+  padding-left: 10px;
+  padding-right: 10px;
+  font-size: 0.9em;
+  font-weight: lighter;
+}
+
+.code-group__nav-tab:hover {
+  @apply text-indigo-500 dark:text-gray-200;
+}
+
+.code-group__nav-tab.code-group__nav-tab-active {
+  @apply text-indigo-200;
+  font-size: 0.95em;
+}
+
+.text-ts {
+  @apply text-blue-800 dark:text-blue-300;
+}
+
+.whiteboard {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply border-0  p-0;
+    &:not(.custom-m) {
+      @apply m-0;
+    }
+  }
+}

@@ -1,4 +1,4 @@
-import { defaultTheme, defineUserConfig } from "vuepress";
+import { defaultTheme, defineUserConfig, viteBundler } from "vuepress";
 import { registerComponentsPlugin } from "@vuepress/plugin-register-components";
 import * as path from "path";
 
@@ -25,12 +25,19 @@ export default defineUserConfig({
       },
     ],
     [
-      "script",
+      "link",
       {
-        src: "https://kit.fontawesome.com/9e6e2bddfe.js",
-        crossorigin: "anonymous",
+        rel: "stylesheet",
+        href: "/icons/css/all.min.css",
       },
     ],
+    // [
+    //   "script",
+    //   {
+    //     src: "https://kit.fontawesome.com/9e6e2bddfe.js",
+    //     crossorigin: "anonymous",
+    //   },
+    // ],
   ],
 
   markdown: {
@@ -49,7 +56,7 @@ export default defineUserConfig({
     // logoDark: "abolish-white.svg",
     navbar: [
       { text: "Home", link: "/" },
-      { text: "Guide", link: "/guide/" },
+      { text: "SDKs", link: "/sdks/" },
       { text: "API", link: "/api/" },
       {
         text: "Links",
@@ -61,5 +68,15 @@ export default defineUserConfig({
         ],
       },
     ],
+  }),
+
+  bundler: viteBundler({
+    viteOptions: {
+      css: {
+        postcss: {
+          plugins: [require("tailwindcss"), require("autoprefixer")],
+        },
+      },
+    },
   }),
 });
