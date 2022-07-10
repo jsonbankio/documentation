@@ -57,7 +57,7 @@ export default defineUserConfig({
     navbar: [
       { text: "Home", link: "/" },
       { text: "SDKs", link: "/sdks/" },
-      { text: "API", link: "/api/" },
+      { text: "Webhooks", link: "/webhooks/" },
       {
         text: "Links",
         children: [

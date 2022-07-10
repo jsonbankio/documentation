@@ -50,13 +50,15 @@
   <div class="whiteboard">
     <PageHeader title="Software Development Kit" icon="fad fa-code" />
 
-    <section class="mb-20 bg-gray-800 mt-16 rounded-md text-white p-10">
+    <section
+      class="max-w-4xl mx-auto mb-20 bg-gray-800 mt-16 rounded-md text-white p-10"
+    >
       <h2 class="text-center text-xl">
         Select <strong class="text-yellow-500">Language</strong>
       </h2>
 
       <div
-        class="max-w-4xl mx-auto grid grid-col-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mt-10"
+        class="grid grid-col-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mt-10"
       >
         <template v-for="lang in languages">
           <div
