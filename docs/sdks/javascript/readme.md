@@ -3,6 +3,7 @@
 This package is written in <b class="text-ts">Typescript</b>.
 
 ## Installation
+
 ```shell
 npm i jsonbank
 # OR YARN
@@ -10,6 +11,7 @@ yarn add jsonbank
 ```
 
 ## Initialize
+
 JsonBank class can be initialized with or without api keys.
 <br>
 Api Keys are only required when you want to access **private/secured** documents
@@ -17,7 +19,7 @@ Api Keys are only required when you want to access **private/secured** documents
 <CodeGroup>
   <CodeGroupItem title="Without Api Keys">
 
-```javascript
+```typescript
 const {JsonBank} = require("jsonbank")
 
 const jsb = new JsonBank();
@@ -27,7 +29,7 @@ const jsb = new JsonBank();
 
   <CodeGroupItem title="With Api Keys" >
 
-```javascript
+```typescript
 const {JsonBank} = require("jsonbank")
 
 // Initialize with Api keys.
@@ -46,20 +48,144 @@ await jsb.authenticate();
 </CodeGroup>
 
 ### Public Api Key
+
 The public api key is a **READONLY** key used to read **public** or **private** documents.
 
 ### Private Api Key
+
 The private api key is a **WRITE-ONLY** key used to **create/update**  documents.
 
-
 ### Check Authentication
+
 To check if the user is authenticated, use the `isAuthenticated` method.
 <br> Make sure to have called `authenticate` method before.
 
-```javascript 
+```typescript 
 // somewhere in your code
 await jsb.authenticate();
 
 // check if the user is authenticated
 jsb.isAuthenticated() // true
 ```
+
+## Public Content
+Public contents do not require authentication.
+
+### getContent()
+Get a public `document` either by `id` or `path`.
+
+```typescript
+const content = await jsb.getContent("id" || "filePath");
+// content is a json object
+```
+
+### getContentMeta()
+Get a public documents `meta` details either by `id` or `path`.
+
+
+
+<CodeGroup>
+  <CodeGroupItem title="Code">
+
+```typescript
+const meta = await jsb.getContentMeta("id" || "filePath");
+console.log(meta)
+```
+
+  </CodeGroupItem>
+
+  <CodeGroupItem title="Result" >
+
+```json
+{
+    "id": "string",
+    "project": "string",
+    "contentSize": {
+      "number": "number",
+      "string": "string"
+    },
+    "path": "string",
+    "updatedAt": "dateString",
+    "createdAt": "dateString"
+}
+```
+
+  </CodeGroupItem>
+</CodeGroup>
+
+
+### getContentByPath()
+Get a public `document` by `path`.
+
+```typescript
+const content = await jsb.getContentByPath("id" || "filePath");
+// content is a json object
+```
+
+### getContentMetaByPath()
+Get a public documents `meta` details by `path`.
+
+
+
+<CodeGroup>
+  <CodeGroupItem title="Code">
+
+```typescript
+const meta = await jsb.getContentMetaByPath("id" || "filePath");
+console.log(meta)
+```
+
+  </CodeGroupItem>
+
+  <CodeGroupItem title="Result" >
+
+```json
+{
+    "id": "string",
+    "project": "string",
+    "contentSize": {
+      "number": "number",
+      "string": "string"
+    },
+    "path": "string",
+    "updatedAt": "dateString",
+    "createdAt": "dateString"
+}
+```
+
+  </CodeGroupItem>
+</CodeGroup>
+
+
+### getGitHubContent()
+Grab a public json file from github.
+
+<CodeGroup>
+  <CodeGroupItem title="Code">
+
+```typescript
+await jsb.getGithubContent("org/repo/file.json");
+
+// example
+await jsb.getGithubContent("jsonbankio/jsonbank-env/factory/jsonbank.env.json")
+```
+
+  </CodeGroupItem>
+
+  <CodeGroupItem title="Result" >
+
+```json
+{
+  "public_key": "",
+  "envs": {
+    "dev": "project/file.json"
+  }
+}
+```
+
+  </CodeGroupItem>
+</CodeGroup>
+
+
+
+## Access Own Content
