@@ -13,7 +13,7 @@ const componentsDir = path.resolve(__dirname, "../../vues");
 export default defineUserConfig({
   lang: "en-US",
   title: "JsonBank Documentation",
-  description: "JsonBank Documentation",
+  description: "JsonBank.io Documentation",
 
   head: [
     [
@@ -88,7 +88,6 @@ export default defineUserConfig({
   }),
 
   plugins: [
-    // @ts-ignore
     registerComponentsPlugin({
       // options
       componentsDir,

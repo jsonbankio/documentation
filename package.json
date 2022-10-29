@@ -17,7 +17,7 @@
     "postcss-scss": "^4.0.4",
     "prettier": "^2.7.1",
     "scss": "^0.2.4",
-    "tailwindcss": "^3.1.5",
+    "tailwindcss": "^3.2.1",
     "vue": "^3.2.37",
     "vuepress": "next"
   },
