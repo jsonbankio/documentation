@@ -168,7 +168,7 @@ Grab a public json file from github. This will read from the `default` branch of
 await jsb.getGithubContent("org/repo/file.json");
 
 // example
-await jsb.getGithubContent("jsonbankio/jsonbank-env/factory/jsonbank.env.json")
+await jsb.getGithubContent("jsonbankio/documentation/github-test.json")
 ```
 
   </CodeGroupItem>
@@ -178,10 +178,8 @@ await jsb.getGithubContent("jsonbankio/jsonbank-env/factory/jsonbank.env.json")
 ```json5
 // This is the content of the json file.
 {
-  "public_key": "",
-  "envs": {
-    "dev": "project/file.json"
-  }
+  "name": "github-test.json",
+  "purpose": "This file is used to test the github json fetcher"
 }
 ```
 
