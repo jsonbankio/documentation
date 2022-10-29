@@ -158,7 +158,8 @@ console.log(meta)
 
 
 ### getGitHubContent()
-Grab a public json file from github.
+Grab a public json file from github. This will read from the `default` branch of the repo.
+
 
 <CodeGroup>
   <CodeGroupItem title="Code">
@@ -174,7 +175,8 @@ await jsb.getGithubContent("jsonbankio/jsonbank-env/factory/jsonbank.env.json")
 
   <CodeGroupItem title="Result" >
 
-```json
+```json5
+// This is the content of the json file.
 {
   "public_key": "",
   "envs": {
