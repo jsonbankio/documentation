@@ -94,8 +94,8 @@ export default defineUserConfig({
       componentsDir,
     }),
 
-    // searchPlugin({
-    //   maxSuggestions: 10,
-    // }),
+    searchPlugin({
+      maxSuggestions: 10,
+    }),
   ],
 });
