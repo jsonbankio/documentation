@@ -4,7 +4,7 @@
   "description": "Jsonbank Documentation",
   "main": "index.js",
   "repository": "https://github.com/jsonbankio/documentation",
-  "author": "helpdesk@trapcode.io",
+  "author": "jsonbankio",
   "license": "MIT",
   "private": true,
   "scripts": {
@@ -19,11 +19,10 @@
     "scss": "^0.2.4",
     "tailwindcss": "^3.1.5",
     "vue": "^3.2.37",
-    "vuepress": "^2.0.0-beta.51"
+    "vuepress": "^2.0.0-beta.53"
   },
   "dependencies": {
-    "@vuepress/plugin-register-components": "^2.0.0-beta.51",
-    "@vuepress/plugin-search": "^2.0.0-beta.51",
-    "vuepress-vite": "^2.0.0-beta.51"
+    "@vuepress/plugin-register-components": "^2.0.0-beta.53",
+    "@vuepress/plugin-search": "^2.0.0-beta.53"
   }
 }
