@@ -63,7 +63,23 @@ export default defineUserConfig({
     // logoDark: "abolish-white.svg",
     navbar: [
       { text: "Home", link: "/" },
-      { text: "SDKs", link: "/sdks/" },
+      {
+        text: "SDKs",
+        children: [
+          {
+            text: "Choose your language",
+            link: "/sdks/",
+          },
+          {
+            text: "Javascript",
+            link: "/sdks/javascript/",
+          },
+          {
+            text: "GoLang",
+            link: "/sdks/golang/",
+          },
+        ],
+      },
       { text: "Webhooks", link: "/webhooks/" },
       {
         text: "Links",
