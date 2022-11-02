@@ -79,9 +79,17 @@ const content = await jsb.getContent("id" || "filePath");
 // content is a json object
 ```
 
-### getContentMeta()
-Get a public documents `meta` details either by `id` or `path`.
 
+### getContentByPath()
+Get a public `document` by `path`.
+
+```typescript
+const content = await jsb.getContentByPath("id" || "filePath");
+// content is a json object
+```
+
+### getDocumentMeta()
+Get a public documents `meta` details either by `id` or `path`.
 
 
 <CodeGroup>
@@ -113,16 +121,7 @@ console.log(meta)
   </CodeGroupItem>
 </CodeGroup>
 
-
-### getContentByPath()
-Get a public `document` by `path`.
-
-```typescript
-const content = await jsb.getContentByPath("id" || "filePath");
-// content is a json object
-```
-
-### getContentMetaByPath()
+### getDocumentMetaByPath()
 Get a public documents `meta` details by `path`.
 
 
@@ -131,7 +130,7 @@ Get a public documents `meta` details by `path`.
   <CodeGroupItem title="Code">
 
 ```typescript
-const meta = await jsb.getContentMetaByPath("id" || "filePath");
+const meta = await jsb.getDocumentMetaByPath("id" || "filePath");
 console.log(meta)
 ```
 
@@ -158,7 +157,7 @@ console.log(meta)
 
 
 ### getGitHubContent()
-Grab a public json file from github. This will read from the `default` branch of the repo.
+Grab a public json file from Github. This will read from the `default` branch of the repo.
 
 
 <CodeGroup>
