@@ -81,12 +81,18 @@ export default defineUserConfig({
         ],
       },
       { text: "Webhooks", link: "/webhooks/" },
+      { text: "Github", link: "https://github.com/jsonbankio" },
+      { text: "Twitter", link: "https://twitter.com/jsonbank" },
       {
         text: "Links",
         children: [
           {
             text: "jsonbank.io",
             link: "https://jsonbank.io",
+          },
+          {
+            text: "blog.jsonbank.io",
+            link: "https://blog.jsonbank.io",
           },
         ],
       },
