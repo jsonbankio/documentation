@@ -78,6 +78,10 @@ export default defineUserConfig({
             text: "GoLang",
             link: "/sdks/golang/",
           },
+          {
+            text: "Rust",
+            link: "/sdks/rust/",
+          },
         ],
       },
       { text: "Webhooks", link: "/webhooks/" },

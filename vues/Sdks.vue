@@ -28,6 +28,13 @@ const languages = ref<Lang[]>([
   },
 
   {
+    name: "Rust",
+    icons: ["fa-brands fa-rust"],
+    active: true,
+    route: "/sdks/rust/index.html",
+  },
+
+  {
     name: "Python",
     icons: ["fa-brands fa-python"],
   },
