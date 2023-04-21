@@ -71,94 +71,69 @@ jsb.isAuthenticated() // true
 ## Public Content
 Public contents do not require authentication.
 
-### getContent()
-Get a public `document` either by `id` or `path`.
-
-```typescript
-const content = await jsb.getContent("id" || "filePath");
-// content is a json object
-```
-
-
-### getContentByPath()
-Get a public `document` by `path`.
-
-```typescript
-const content = await jsb.getContentByPath("id" || "filePath");
-// content is a json object
-```
-
 ### getDocumentMeta()
-Get a public documents `meta` details either by `id` or `path`.
-
+Get a public document `meta` details either by `id` or `path`.
+Does not return the content of the document.
+To get the content, use [getContent](#getcontent) method.
 
 <CodeGroup>
   <CodeGroupItem title="Code">
 
 ```typescript
-const meta = await jsb.getContentMeta("id" || "filePath");
-console.log(meta)
+const meta = await jsb.getDocumentMeta("id_or_path");
+// result is of type "JSB_Response.ContentMeta"
+console.log(meta.id) // id of the document
+console.log(meta.project) // project name
+console.log(meta.contentSize) // size object of the document
+console.log(meta.path) // path of the document
+console.log(meta.updatedAt) // date of last update
+console.log(meta.createdAt) // date of creation
 ```
 
   </CodeGroupItem>
 
   <CodeGroupItem title="Result" >
 
-```json
-{
-    "id": "string",
-    "project": "string",
-    "contentSize": {
-      "number": "number",
-      "string": "string"
-    },
-    "path": "string",
-    "updatedAt": "dateString",
-    "createdAt": "dateString"
-}
-```
-
-  </CodeGroupItem>
-</CodeGroup>
-
-### getDocumentMetaByPath()
-Get a public documents `meta` details by `path`.
-
-
-
-<CodeGroup>
-  <CodeGroupItem title="Code">
-
 ```typescript
-const meta = await jsb.getDocumentMetaByPath("id" || "filePath");
-console.log(meta)
-```
-
-  </CodeGroupItem>
-
-  <CodeGroupItem title="Result" >
-
-```json
-{
-    "id": "string",
-    "project": "string",
-    "contentSize": {
-      "number": "number",
-      "string": "string"
-    },
-    "path": "string",
-    "updatedAt": "dateString",
-    "createdAt": "dateString"
-}
+ type ContentMeta = {
+  id: string;
+  project: string;
+  contentSize: {
+    number: number;
+    string: string;
+  };
+  path: string;
+  updatedAt: string;
+  createdAt: string;
+};
 ```
 
   </CodeGroupItem>
 </CodeGroup>
 
+
+### getContent()
+Get a public document `content` either by `id` or `path`.
+It returns the json parsed object.
+```typescript
+const content = await jsb.getContent("id_or_path");
+// content is a json object
+```
+
+### getContentAsString()
+Get a public document `content` either by `id` or `path` as a string.
+It returns a string.
+```typescript
+const content = await jsb.getContentAsString("id_or_path");
+// content is a string
+```
 
 ### getGitHubContent()
 Grab a public json file from Github. This will read from the `default` branch of the repo.
+<br>
+It returns the json parsed object.
 
+**Note:** Referenced file must be a public json file.
 
 <CodeGroup>
   <CodeGroupItem title="Code">
@@ -180,6 +155,32 @@ await jsb.getGithubContent("jsonbankio/documentation/github-test.json")
   "name": "github-test.json",
   "purpose": "This file is used to test the github json fetcher"
 }
+```
+
+  </CodeGroupItem>
+</CodeGroup>
+
+### getGitHubContentAsString()
+Same as [getGitHubContent](#getgithubcontent) but returns the content as a string.
+
+**Note:** Referenced file must be a public json file.
+
+<CodeGroup>
+  <CodeGroupItem title="Code">
+
+```typescript
+await jsb.getGithubContentAsString("org/repo/file.json");
+
+// example
+await jsb.getGithubContentAsString("jsonbankio/documentation/github-test.json")
+```
+
+  </CodeGroupItem>
+
+  <CodeGroupItem title="Result" >
+
+```text
+{"name": "github-test.json", "purpose": "This file is used to test the github json fetcher"}
 ```
 
   </CodeGroupItem>

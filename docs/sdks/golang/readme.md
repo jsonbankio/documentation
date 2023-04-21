@@ -79,58 +79,43 @@ fmt.Println("Authenticated as:", authenticated.Username)
 
 Public contents do not require authentication.
 
+### GetDocumentMeta()
+
+Get a public document `meta` details either by `id` or `path`.
+Does not return the content of the document.
+To get the content, use [GetContent](#getcontent) method.
+
+```go
+meta, err := jsb.GetDocumentMeta("id_or_path")
+
+// Meta returns the following struct
+type DocumentMeta struct {
+	Id        string `json:"id"`        // id of the document
+	Project   string `json:"project"`   // project of the document
+	Path      string `json:"path"`      // path of the document
+	UpdatedAt string `json:"updatedAt"` // last update time of the document
+	CreatedAt string `json:"createdAt"` // creation time of the document
+}
+```
+
 ### GetContent()
 
 Get a public `document` content either by `id` or `path`.
 
 ```go
-data, err := jsb.GetOwnContent("id" || "path")
+data, err := jsb.GetOwnContent("id_or_path")
+if err != nil {
+    panic(err)
+}
+
 // data is of any type
 // so you can use it as you want
-```
 
-### GetContentByPath()
+// as a map
+formattedContent := content.(map[string]interface{})
 
-Get a public `document` by `path`.
-
-```go
-data, err := jsb.GetOwnContentByPath("id" || "path")
-// data is of any type
-// so you can use it as you want
-```
-
-### GetDocumentMeta()
-
-Get a public document `meta` details either by `id` or `path`.
-
-```go
-meta, err := jsb.GetDocumentMeta("id" || "path")
-
-// Meta returns the following struct
-type DocumentMeta struct {
-	Id        string `json:"id"`        // id of the document
-	Project   string `json:"project"`   // project of the document
-	Path      string `json:"path"`      // path of the document
-	UpdatedAt string `json:"updatedAt"` // last update time of the document
-	CreatedAt string `json:"createdAt"` // creation time of the document
-}
-```
-
-### GetDocumentMetaByPath()
-
-Get a public documents `meta` details by `path`.
-
-```go
-meta, err := jsb.GetDocumentMetaByPath("path")
-
-// Meta returns the following struct
-type DocumentMeta struct {
-	Id        string `json:"id"`        // id of the document
-	Project   string `json:"project"`   // project of the document
-	Path      string `json:"path"`      // path of the document
-	UpdatedAt string `json:"updatedAt"` // last update time of the document
-	CreatedAt string `json:"createdAt"` // creation time of the document
-}
+// or as an array
+formattedContent := content.([]interface{})
 ```
 
 ### GetGitHubContent()
@@ -146,5 +131,16 @@ result, err := jsb.GetGithubContent("jsonbankio/documentation/github-test.json")
 // result is of any type
 // so you can use it as you want
 ```
+
+### GetGitHubContentAsString()
+Same as [GetGitHubContent](#getgithubcontent) but returns the content as a string.
+
+```go
+data, err := jsb.GetGithubContentAsString("org/repo/file.json");
+
+// example
+result, err := jsb.GetGithubContentAsString("jsonbankio/documentation/github-test.json")    
+```
+
 
 ## Access Own Content
