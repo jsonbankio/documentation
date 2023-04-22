@@ -1,13 +1,13 @@
 import { defaultTheme, defineUserConfig, viteBundler } from "vuepress";
 import { registerComponentsPlugin } from "@vuepress/plugin-register-components";
-import * as path from "path";
+import * as path from "node:path";
 import { searchPlugin } from "@vuepress/plugin-search";
 
 import tailwindcss from "tailwindcss";
 // @ts-ignore
 import autoprefixer from "autoprefixer";
 
-const componentsDir = path.resolve(__dirname, "../../vues");
+const componentDir = path.resolve(__dirname, "../../vues");
 
 // @ts-ignore
 export default defineUserConfig({
@@ -116,7 +116,7 @@ export default defineUserConfig({
   plugins: [
     registerComponentsPlugin({
       // options
-      componentsDir,
+      componentsDir: componentDir,
     }),
 
     searchPlugin({

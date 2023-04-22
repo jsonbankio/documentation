@@ -1,9 +1,9 @@
 <script setup lang="ts">
-  import { ref } from "vue";
-  import { useRouter } from "vue-router";
-  import PageHeader from "../components/PageHeader.vue";
+// import { ref } from "vue";
+// import { useRouter } from "vue-router";
+import PageHeader from "../components/PageHeader.vue";
 
-  const $router = useRouter();
+// const $router = useRouter();
 </script>
 
 <template>
