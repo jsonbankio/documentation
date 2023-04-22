@@ -65,6 +65,87 @@ The public api key is a **READONLY** key used to read **public** or **private** 
 The private api key is a **WRITE-ONLY** key used to **create/update** documents.
 
 
+## Content Types
+3 return types are available for `content` methods. 
+
+- `JsonObject`
+- `JsonArray`
+- `JsonValue`
+
+They can be imported from the `jsonbank` crate.
+```rust
+use jsonbank::{JsonBank, JsonObject, JsonArray, JsonValue};
+```
+
+
+### JsonObject
+if the root of your json document is an object, you should use `JsonObject` type.
+
+Using this [json object file from jsonbank](https://api.jsonbank.io/f/jsonbank/sdk-test/index.json)
+
+```rust
+// get content as a JsonObject
+let data: JsonObject = match jsb.get_content("jsonbank/sdk-test/index.json") {
+    Ok(data) => data,
+    Err(err) => panic!("{:?}", err)
+};
+
+println!("{:?}", data);
+
+// Assuming the content of the document has a JsonObject with a key "author"
+// we can access it like this
+
+println!("{:?}", data["author"]);
+```
+
+The endpoint used in the example above is sure to return a `JsonObject`.
+If it doesn't, your code will panic.
+
+### JsonArray
+if the root of your json document is an array, you should use `JsonArray` type.
+
+Using this [json array file from github](https://api.jsonbank.io/gh/jsonbankio/documentation/github-test-array.json)
+```rust
+// get content as a JsonArray
+let content: JsonArray = match jsb.get_github_content("jsonbankio/documentation/github-test-array.json") {
+    Ok(content) => content,
+    Err(err) => panic!("{:?}", err),
+};
+
+println!("{:?}", content);
+
+// check that content matches the expected type
+assert_eq!(content[0], 1);
+assert_eq!(content[1], "MultiType Array");
+assert_eq!(content[2].as_object().unwrap()["name"], "github-test-array.json");
+```
+
+The endpoint used in the example above is sure to return a `JsonArray`.
+If it doesn't, your code will panic.
+
+### JsonValue
+if you don't know the type of the root of your json document, you should use `JsonValue` type.
+This type is a wrapper around `serde_json::Value` type which can be either `Object`, `Array`, `String`, `Number`, `Boolean` or `Null`.
+
+Using the same example as above, we can use `JsonValue` type to get the array content.
+
+```rust
+// get content as a JsonValue
+let content: JsonValue = match jsb.get_github_content("jsonbankio/documentation/github-test-array.json") {
+    Ok(content) => content,
+    Err(err) => panic!("{:?}", err),
+};
+
+println!("{:?}", content);
+
+// check that content matches the expected type
+assert_eq!(content[0], 1);
+assert_eq!(content[1], "MultiType Array");
+assert_eq!(content[2].as_object().unwrap()["name"], "github-test-array.json");
+```
+
+
+
 ## Public Content
 
 Public contents/resources do not require authentication.
@@ -102,22 +183,64 @@ pub struct DocumentMeta {
 
 ### get_content()
 Get a public document `content` either by `id` or `path`.
+You have to specify [Content Type](#content-types) you are expecting.
 
-You have to specify the type of the content you want to get. either `JsonObject` or `JsonArray`.
-
+Using this [json object file from jsonbank](https://api.jsonbank.io/f/jsonbank/sdk-test/index.json)
 ```rust
+// get content as a JsonObject
 let data: JsonObject = match jsb.get_content("jsonbank/sdk-test/index.json") {
     Ok(data) => data,
     Err(err) => panic!("{:?}", err)
 };
 
 println!("{:?}", data);
-
-// Assuming the content of the document has a JsonObject with a key "author"
-// we can access it like this
-
-println!("{:?}", data["author"]);
+println!("{:?}", data["author"]); // => "jsonbank"
 ```
 
-The endpoint used in the example above is a [public document](https://api.jsonbank.io/f/jsonbank/sdk-test/index.json) and its sure to return a `JsonObject`.
-If it doesn't, your code will panic.
+### get_content_as_string()
+Same as [get_content](#getcontent) but returns the content as a `String` type.
+
+Using this [json object file from jsonbank](https://api.jsonbank.io/f/jsonbank/sdk-test/index.json)
+```rust
+// get content as a String
+let data: String = match jsb.get_content_as_string("jsonbank/sdk-test/index.json") {
+    Ok(data) => data,
+    Err(err) => panic!("{:?}", err)
+};
+
+println!("{:?}", data); // => content of the document as a String
+```
+
+### get_gitHub_content()
+Grab a public json file from Github.
+This will read from the `default` branch of the repo.
+<br>
+Just like [get_content](#getcontent), you have to specify [Content Type](#content-types) you are expecting.
+
+**Note:** Referenced file must be a public json file.
+
+Using this [json object file from github](https://api.jsonbank.io/gh/jsonbankio/documentation/github-test.json)
+```rust
+// get content as a JsonObject
+let data: JsonObject = match jsb.get_github_content("jsonbankio/documentation/github-test.json") {
+    Ok(data) => data,
+    Err(err) => panic!("{:?}", err)
+};
+
+println!("{:?}", data);
+println!("{:?}", data["name"]); // => "github-test.json"
+```
+
+### get_gitHub_content_as_string()
+Same as [get_gitHub_content](#getgithubcontent) but returns the content as a `String` type.
+
+Using this [json object file from github](https://api.jsonbank.io/gh/jsonbankio/documentation/github-test.json)
+```rust
+// get content as a String
+let data: String = match jsb.get_github_content_as_string("jsonbankio/documentation/github-test.json") {
+    Ok(data) => data,
+    Err(err) => panic!("{:?}", err)
+};
+
+println!("{:?}", data); // => content of the document as a String
+```
