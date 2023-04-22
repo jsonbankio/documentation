@@ -177,7 +177,7 @@ await jsb.getGithubContentAsString("jsonbankio/documentation/github-test.json")
 
   </CodeGroupItem>
 
-  <CodeGroupItem title="Result" >
+  <CodeGroupItem title="Result">
 
 ```text
 {"name": "github-test.json", "purpose": "This file is used to test the github json fetcher"}
@@ -189,3 +189,6 @@ await jsb.getGithubContentAsString("jsonbankio/documentation/github-test.json")
 
 
 ## Access Own Content
+To access your own content, you need to authenticate with your api keys.
+
+See [With Api Keys](#withapikeys) for more details.

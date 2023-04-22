@@ -2,8 +2,6 @@
 
 [github](https://github.com/jsonbankio/rust-sdk) | [crates.io](https://crates.io/crates/jsonbank)
 
-
-
 ## Installation
 
 Add the following to your Cargo.toml file
@@ -14,10 +12,12 @@ jsonbank = "0.1"
 ```
 
 ## Initialization
+
 The JsonBank struct can be initialized with or without api keys.
 Api Keys are only required when you want to access **private/secured** documents
 
 ### Without Api Keys
+
 ```rust
 use jsonbank::{JsonBank, JsonObject};
 
@@ -34,8 +34,8 @@ fn main() {
 }
 ```
 
-
 ### With Api Keys
+
 ```rust
 use jsonbank::{JsonBank, InitConfig, Keys};
 
@@ -64,21 +64,22 @@ The public api key is a **READONLY** key used to read **public** or **private** 
 
 The private api key is a **WRITE-ONLY** key used to **create/update** documents.
 
-
 ## Content Types
-3 return types are available for `content` methods. 
+
+3 return types are available for `content` methods.
 
 - `JsonObject`
 - `JsonArray`
 - `JsonValue`
 
 They can be imported from the `jsonbank` crate.
+
 ```rust
 use jsonbank::{JsonBank, JsonObject, JsonArray, JsonValue};
 ```
 
-
 ### JsonObject
+
 if the root of your json document is an object, you should use `JsonObject` type.
 
 Using this [json object file from jsonbank](https://api.jsonbank.io/f/jsonbank/sdk-test/index.json)
@@ -102,9 +103,11 @@ The endpoint used in the example above is sure to return a `JsonObject`.
 If it doesn't, your code will panic.
 
 ### JsonArray
+
 if the root of your json document is an array, you should use `JsonArray` type.
 
 Using this [json array file from github](https://api.jsonbank.io/gh/jsonbankio/documentation/github-test-array.json)
+
 ```rust
 // get content as a JsonArray
 let content: JsonArray = match jsb.get_github_content("jsonbankio/documentation/github-test-array.json") {
@@ -124,8 +127,10 @@ The endpoint used in the example above is sure to return a `JsonArray`.
 If it doesn't, your code will panic.
 
 ### JsonValue
+
 if you don't know the type of the root of your json document, you should use `JsonValue` type.
-This type is a wrapper around `serde_json::Value` type which can be either `Object`, `Array`, `String`, `Number`, `Boolean` or `Null`.
+This type is a wrapper around `serde_json::Value` type which can be
+either `Object`, `Array`, `String`, `Number`, `Boolean` or `Null`.
 
 Using the same example as above, we can use `JsonValue` type to get the array content.
 
@@ -144,13 +149,22 @@ assert_eq!(content[1], "MultiType Array");
 assert_eq!(content[2].as_object().unwrap()["name"], "github-test-array.json");
 ```
 
+## Helper Methods
 
+### set_host()
 
-## Public Content
+Set the host to use for the api calls. By default it is set to `https://api.jsonbank.io`
+
+```rust
+jsb.set_host("https://api.jsonbank.io");
+```
+
+## Public Content Methods
 
 Public contents/resources do not require authentication.
 
 ### get_document_meta()
+
 Get a public document `meta` details either by `id` or `path`.
 Doesn't return the content of the document.
 To get the content, use [get_content](#getcontent) method.
@@ -164,12 +178,6 @@ let meta = match jsb.get_document_meta("jsonbank/sdk-test/index.json") {
 println!("{:?}", meta);
 
 // Output
-
-pub struct ContentSize {
-    pub number: u64,
-    pub string: String,
-}
-
 pub struct DocumentMeta {
     pub id: String,
     pub project: String,
@@ -178,14 +186,21 @@ pub struct DocumentMeta {
     pub updated_at: String,
     pub created_at: String,
 }
+
+pub struct ContentSize {
+    pub number: u64,
+    pub string: String,
+}
+
 ```
 
-
 ### get_content()
+
 Get a public document `content` either by `id` or `path`.
 You have to specify [Content Type](#content-types) you are expecting.
 
 Using this [json object file from jsonbank](https://api.jsonbank.io/f/jsonbank/sdk-test/index.json)
+
 ```rust
 // get content as a JsonObject
 let data: JsonObject = match jsb.get_content("jsonbank/sdk-test/index.json") {
@@ -198,9 +213,11 @@ println!("{:?}", data["author"]); // => "jsonbank"
 ```
 
 ### get_content_as_string()
+
 Same as [get_content](#getcontent) but returns the content as a `String` type.
 
 Using this [json object file from jsonbank](https://api.jsonbank.io/f/jsonbank/sdk-test/index.json)
+
 ```rust
 // get content as a String
 let data: String = match jsb.get_content_as_string("jsonbank/sdk-test/index.json") {
@@ -211,7 +228,8 @@ let data: String = match jsb.get_content_as_string("jsonbank/sdk-test/index.json
 println!("{:?}", data); // => content of the document as a String
 ```
 
-### get_gitHub_content()
+### get_github_content()
+
 Grab a public json file from Github.
 This will read from the `default` branch of the repo.
 <br>
@@ -220,6 +238,7 @@ Just like [get_content](#getcontent), you have to specify [Content Type](#conten
 **Note:** Referenced file must be a public json file.
 
 Using this [json object file from github](https://api.jsonbank.io/gh/jsonbankio/documentation/github-test.json)
+
 ```rust
 // get content as a JsonObject
 let data: JsonObject = match jsb.get_github_content("jsonbankio/documentation/github-test.json") {
@@ -231,10 +250,12 @@ println!("{:?}", data);
 println!("{:?}", data["name"]); // => "github-test.json"
 ```
 
-### get_gitHub_content_as_string()
+### get_github_content_as_string()
+
 Same as [get_gitHub_content](#getgithubcontent) but returns the content as a `String` type.
 
 Using this [json object file from github](https://api.jsonbank.io/gh/jsonbankio/documentation/github-test.json)
+
 ```rust
 // get content as a String
 let data: String = match jsb.get_github_content_as_string("jsonbankio/documentation/github-test.json") {
@@ -244,3 +265,69 @@ let data: String = match jsb.get_github_content_as_string("jsonbankio/documentat
 
 println!("{:?}", data); // => content of the document as a String
 ```
+
+## Authentication Methods
+
+### authenticate()
+
+This method is used to authenticate a user. you can use it to test if your credentials are valid.
+
+If the authentication is successful, it will return an `AuthenticatedData` struct.
+
+```rust
+let auth = match jsb.authenticate() {
+    Ok(auth) => auth,
+    Err(err) => panic!("{:?}", err),
+};
+
+assert_eq!(auth.authenticated, true);
+
+// Output
+pub struct AuthenticatedData {
+    pub authenticated: bool,
+    pub username: String,
+    pub api_key: AuthenticatedKey,
+}
+
+pub struct AuthenticatedKey {
+    pub title: String,
+    pub projects: Vec<String>,
+}
+```
+
+### is_authenticated()
+
+Check if the user is authenticated.
+
+**Note:** you must call [authenticate](#authenticate) method before calling this method.
+Data returned by [authenticate](#authenticate) method is stored in the `JsonBank` struct
+and is used by this method to check if the user is authenticated.
+
+```rust
+let _ = match jsb.authenticate() {
+    Ok(auth) => auth,
+    Err(err) => panic!("{:?}", err),
+};
+
+assert_eq!(jsb.is_authenticated(), true);
+```
+
+### get_username()
+
+Get the username of the authenticated user.
+
+**Note:** you must call [authenticate](#authenticate) method before calling this method.
+
+```rust
+let _ = match jsb.authenticate() {
+    Ok(auth) => auth,
+    Err(err) => panic!("{:?}", err),
+};
+
+println!("{:?}", jsb.get_username()); // => "your_username"
+```
+
+
+## Authorized Content Methods
+
+
