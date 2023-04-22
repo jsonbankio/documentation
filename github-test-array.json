@@ -2,7 +2,7 @@
   1,
   "MultiType Array",
   {
-    "name": "github-test.json",
+    "name": "github-test-array.json",
     "purpose": "This file is used to test the github json fetcher"
   }
 ]
