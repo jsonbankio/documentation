@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+*,
+::before,
+::after {
+  border-width: 0;
+  border-style: solid;
+}
+
 // Variables
 $primary: #5046e4;
 $primary-dark: #483fcd;
@@ -10,9 +17,9 @@ $primary-light: #6259e7;
 // change the color of the theme
 // primary color should be light then new light and dark color
 // should be generated using sass darken and lighten function
-$primary: $primary-light;
-$primary-dark: darken($primary, 10%);
-$primary-light: lighten($primary, 10%);
+//$primary: #6259e7;
+//$primary-dark: darken($primary, 10%);
+//$primary-light: lighten($primary, 10%);
 
 :root {
   --c-brand: $primary;
