@@ -24,7 +24,6 @@ The public api key is a **READONLY** key used to read **public** or **private** 
 
 The private api key is a **WRITE-ONLY** key used to **create/update** documents.
 
-
 ### Without Api Keys
 
 ```rust
@@ -32,7 +31,7 @@ use jsonbank::{JsonBank, JsonObject};
 
 fn main() {
     let jsb = JsonBank::new_without_config();
-   
+
     // get public content
     let data: JsonObject = match jsb.get_content("jsonbank/sdk-test/index.json") {
         Ok(data) => data,
@@ -150,6 +149,31 @@ assert_eq!(content[1], "MultiType Array");
 assert_eq!(content[2].as_object().unwrap()["name"], "github-test-array.json");
 ```
 
+## Structs
+
+The following structs are structs you should know and will be referenced in the examples.
+
+### DocumentMeta
+
+This struct is returned by the [get_document_meta](#getdocumentmeta) & [get_own_document_meta](#getowndocumentmeta)
+methods..
+
+```rust
+pub struct DocumentMeta {
+    pub id: String,
+    pub project: String,
+    pub path: String,
+    pub content_size: ContentSize,
+    pub updated_at: String,
+    pub created_at: String,
+}
+
+pub struct ContentSize {
+    pub number: u64,
+    pub string: String,
+}
+```
+
 ## Helper Methods
 
 ### set_host()
@@ -170,29 +194,15 @@ Get a public document `meta` details either by `id` or `path`.
 Doesn't return the content of the document.
 To get the content, use [get_content](#getcontent) method.
 
+**Returns: [DocumentMeta](#documentmeta)**
+
 ```rust
-let meta = match jsb.get_document_meta("jsonbank/sdk-test/index.json") {
+let meta = match jsb.get_document_meta("id_or_path") {
     Ok(meta) => meta,
     Err(err) => panic!("{:?}", err)
 };
 
 println!("{:?}", meta);
-
-// Output
-pub struct DocumentMeta {
-    pub id: String,
-    pub project: String,
-    pub path: String,
-    pub content_size: ContentSize,
-    pub updated_at: String,
-    pub created_at: String,
-}
-
-pub struct ContentSize {
-    pub number: u64,
-    pub string: String,
-}
-
 ```
 
 ### get_content()
@@ -204,7 +214,7 @@ Using this [json object file from jsonbank](https://api.jsonbank.io/f/jsonbank/s
 
 ```rust
 // get content as a JsonObject
-let data: JsonObject = match jsb.get_content("jsonbank/sdk-test/index.json") {
+let data: JsonObject = match jsb.get_content("id_or_path") {
     Ok(data) => data,
     Err(err) => panic!("{:?}", err)
 };
@@ -217,11 +227,9 @@ println!("{:?}", data["author"]); // => "jsonbank"
 
 Same as [get_content](#getcontent) but returns the content as a `String` type.
 
-Using this [json object file from jsonbank](https://api.jsonbank.io/f/jsonbank/sdk-test/index.json)
-
 ```rust
 // get content as a String
-let data: String = match jsb.get_content_as_string("jsonbank/sdk-test/index.json") {
+let data: String = match jsb.get_content_as_string("id_or_path") {
     Ok(data) => data,
     Err(err) => panic!("{:?}", err)
 };
@@ -328,7 +336,37 @@ let _ = match jsb.authenticate() {
 println!("{:?}", jsb.get_username()); // => "your_username"
 ```
 
-
 ## Authorized Content Methods
 
+The following methods require authentication. Either `public` or `private` key is required.
 
+When using `path` to identify a document, the `username` is not required because we already know who the user is.
+
+### get_own_content_meta()
+
+Get information about a document without the content.
+To get the content, use [get_own_content](#getowncontent) method.
+
+```rust
+let meta = match jsb.get_own_content_meta("sdk-test/index.json") {
+    Ok(meta) => meta,
+    Err(err) => panic!("{:?}", err)
+};
+
+println!("{:?}", meta);
+
+// Output
+pub struct DocumentMeta {
+    pub id: String,
+    pub project: String,
+    pub path: String,
+    pub content_size: ContentSize,
+    pub updated_at: String,
+    pub created_at: String,
+}
+
+pub struct ContentSize {
+    pub number: u64,
+    pub string: String,
+}
+```

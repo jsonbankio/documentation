@@ -64,7 +64,7 @@ function onLangClick(lang: Lang) {
         mt-16
         rounded-md
         text-white
-        p-10
+        p-5
       "
     >
       <h2 class="text-center text-xl">
@@ -82,18 +82,7 @@ function onLangClick(lang: Lang) {
         "
       >
         <template v-for="lang in languages">
-          <div
-            @click.prevent="onLangClick(lang)"
-            class="
-              col-span-1
-              text-center
-              bg-gray-900
-              hover:border hover:border-green-400 hover:border-opacity-50
-              rounded
-              p-5
-              cursor-pointer
-            "
-          >
+          <div @click.prevent="onLangClick(lang)" class="col-span-1 lang">
             <div class="grid grid-cols-2 my-3 space-2">
               <template v-for="(icon, index) in lang.icons">
                 <div
@@ -118,7 +107,7 @@ function onLangClick(lang: Lang) {
             </div>
             <div>
               <strong class="text-yellow-400 text-lg"
-                >{{ lang.name }} Sdk</strong
+                >{{ lang.name }} SDK</strong
               >
               <h6 v-if="!lang.active" class="text-sm text-gray-400">
                 (Not out yet!)
@@ -130,3 +119,10 @@ function onLangClick(lang: Lang) {
     </section>
   </div>
 </template>
+
+<style scoped lang="scss">
+.lang {
+  @apply text-center bg-gray-900 rounded p-5 cursor-pointer;
+  @apply hover:border-2 hover:border-green-400 hover:border-opacity-50 hover:shadow-lg;
+}
+</style>
