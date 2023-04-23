@@ -14,7 +14,16 @@ jsonbank = "0.1"
 ## Initialization
 
 The JsonBank struct can be initialized with or without api keys.
-Api Keys are only required when you want to access **private/secured** documents
+Api Keys are only required when you want to access **protected/private** documents.
+
+### Public Api Key
+
+The public api key is a **READONLY** key used to read **public** or **private** documents.
+
+### Private Api Key
+
+The private api key is a **WRITE-ONLY** key used to **create/update** documents.
+
 
 ### Without Api Keys
 
@@ -55,14 +64,6 @@ fn main() {
     };
 }
 ```
-
-### Public Api Key
-
-The public api key is a **READONLY** key used to read **public** or **private** documents.
-
-### Private Api Key
-
-The private api key is a **WRITE-ONLY** key used to **create/update** documents.
 
 ## Content Types
 

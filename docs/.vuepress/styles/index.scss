@@ -2,16 +2,28 @@
 @tailwind components;
 @tailwind utilities;
 
+// Variables
+$primary: #5046e4;
+$primary-dark: #483fcd;
+$primary-light: #6259e7;
+
+// change the color of the theme
+// primary color should be light then new light and dark color
+// should be generated using sass darken and lighten function
+$primary: $primary-light;
+$primary-dark: darken($primary, 10%);
+$primary-light: lighten($primary, 10%);
+
 :root {
-  --c-brand: #5046e4;
-  --c-brand-dark: #483fcd;
-  --c-brand-light: 6259e7;
+  --c-brand: $primary;
+  --c-brand-dark: $primary-dark;
+  --c-brand-light: $primary-light;
 }
 
 html.dark {
-  --c-brand: #5046e4;
-  --c-brand-dark: #483fcd;
-  --c-brand-light: 6259e7;
+  --c-brand: $primary;
+  --c-brand-dark: $primary-dark;
+  --c-brand-light: $primary-light;
 }
 
 .no-sidebar {
@@ -19,7 +31,7 @@ html.dark {
 }
 
 body {
-  font-family: "system-ui", "PT Sans", sans-serif;
+  font-family: "PT Sans", "system-ui", sans-serif;
   font-size: 1em;
 }
 

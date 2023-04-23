@@ -45,13 +45,6 @@ export default defineUserConfig({
         href: "/favicon.ico",
       },
     ],
-    // [
-    //   "script",
-    //   {
-    //     src: "https://kit.fontawesome.com/9e6e2bddfe.js",
-    //     crossorigin: "anonymous",
-    //   },
-    // ],
   ],
 
   markdown: {
@@ -59,8 +52,6 @@ export default defineUserConfig({
   },
 
   theme: defaultTheme({
-    // logo: "/abolish-black.svg",
-    // logoDark: "abolish-white.svg",
     navbar: [
       { text: "Home", link: "/" },
       {
