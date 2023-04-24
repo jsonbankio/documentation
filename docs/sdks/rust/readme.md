@@ -151,129 +151,6 @@ assert_eq!(content[1], "MultiType Array");
 assert_eq!(content[2].as_object().unwrap()["name"], "github-test-array.json");
 ```
 
-## Structs
-
-The following structs are structs you should know and will be referenced in the examples.
-
-They can be imported from the `jsonbank` crate.
-
-```rust
-//  import all
-use jsonbank::structs::*;
-
-// import specific structs
-use jsonbank::structs::{DocumentMeta, AuthenticatedData};
-```
-
-### DocumentMeta
-
-This struct is returned by the [get_document_meta](#getdocumentmeta) & [get_own_document_meta](#getowncontentmeta)
-methods..
-
-```rust
-pub struct DocumentMeta {
-    pub id: String,
-    pub project: String,
-    pub path: String,
-    pub content_size: ContentSize,
-    pub updated_at: String,
-    pub created_at: String,
-}
-
-pub struct ContentSize {
-    pub number: u64,
-    pub string: String,
-}
-```
-
-### AuthenticatedData
-
-This struct is returned by the [authenticate](#authenticate) method.
-
-```rust
-pub struct AuthenticatedData {
-    pub authenticated: bool,
-    pub username: String,
-    pub api_key: AuthenticatedKey,
-}
-
-pub struct AuthenticatedKey {
-    pub title: String,
-    pub projects: Vec<String>,
-}
-```
-
-### CreateDocumentBody
-
-This struct is used by the [create_document](#createdocument) method to create a new document.
-
-```rust
-pub struct CreateDocumentBody {
-    pub name: String,
-    pub project: String,
-    pub folder: Option<String>,
-    pub content: String,
-}
-```
-
-### UploadDocumentBody
-
-This struct is used by the [upload_document](#uploaddocument) method to upload a new document.
-
-```rust
-pub struct UploadDocumentBody {
-    pub file_path: String,
-    pub project: String,
-    // Name is optional, if not provided, the file name will be used
-    pub name: Option<String>,
-    // Folder is optional, if not provided, the document will be created at the root of the project
-    pub folder: Option<String>,
-}
-```
-
-### NewDocument
-
-This struct is returned by the [create_document](#createdocument) method.
-
-```rust
-pub struct NewDocument {
-    pub id: String,
-    pub name: String,
-    pub path: String,
-    pub project: String,
-    pub created_at: String,
-    // this field is not returned by the api
-    // it is used by the `create_document_if_not_exists` method
-    pub exists: bool,
-}
-```
-
-### UpdatedDocument
-
-This struct is returned by the [update_document](#updateddocument) method.
-
-The `changed` field is true if the document was updated and false if it wasn't.
-The document will not be updated if the content is the same.
-
-```rust
-pub struct UpdatedDocument {
-    pub changed: bool,
-}
-```
-
-### CreateFolderBody
-
-This struct is used by the [create_folder](#createfolder) method to create a new folder.
-
-```rust
-pub struct CreateFolderBody {
-    pub name: String,
-    pub project: String,
-    // folder is optional, if not provided, the folder will be created at the root of the project
-    pub folder: Option<String>,
-}
-```
-
 ## Helper Methods
 
 ### set_host()
@@ -294,7 +171,7 @@ Get a public document `meta` details either by `id` or `path`.
 Doesn't return the content of the document.
 To get the content, use [get_content](#getcontent) method.
 
-**Returns: [DocumentMeta](#documentmeta)**
+**Returns: [DocumentMeta](https://docs.rs/jsonbank/latest/jsonbank/structs/struct.DocumentMeta.html)**
 
 ```rust
 let meta = match jsb.get_document_meta("id_or_path") {
@@ -377,7 +254,7 @@ println!("{:?}", data); // => content of the document as a String
 ### authenticate()
 
 This method is used to authenticate a user. you can use it to test if your credentials are valid.
-If the authentication is successful, it will return an [AuthenticatedData](#authenticateddata) struct.
+If the authentication is successful, it will return an [AuthenticatedData](https://docs.rs/jsonbank/latest/jsonbank/structs/struct.AuthenticatedData.html) struct.
 
 ```rust
 let auth = match jsb.authenticate() {
@@ -431,7 +308,7 @@ When using `path` to identify a document, the `username` is not required because
 Get information about a document without the content.
 To get the content, use [get_own_content](#getowncontent) method.
 
-**Returns: [DocumentMeta](#documentmeta)**
+**Returns: [DocumentMeta](https://docs.rs/jsonbank/latest/jsonbank/structs/struct.DocumentMeta.html)**
 
 ```rust
 let meta = match jsb.get_own_content_meta("sdk-test/index.json") {
@@ -508,7 +385,7 @@ println!("{:?}", has_doc); // => true or false
 
 This method is used to create a new document.
 
-**Returns: [NewDocument](#newdocument)**
+**Returns: [NewDocument](https://docs.rs/jsonbank/latest/jsonbank/structs/struct.NewDocument.html)**
 
 ```rust
 let new_doc_body = CreateDocumentBody {
@@ -533,7 +410,7 @@ Before fetching the document.
 
 It returns same struct as [create_document](#createdocument) method but with the `exists` field set to `true` if the document already exists.
 
-**Returns: [NewDocument](#newdocument)**
+**Returns: [NewDocument](https://docs.rs/jsonbank/latest/jsonbank/structs/struct.NewDocument.html)**
 
 ```rust
 let new_doc_body = CreateDocumentBody {
@@ -560,7 +437,7 @@ if new_doc.exists {
 
 Upload a new document. Behind the scenes, it reads the content from a file and uses the [create_document](#createdocument) method to create the document.
 
-**Returns: [NewDocument](#newdocument)**
+**Returns: [NewDocument](https://docs.rs/jsonbank/latest/jsonbank/structs/struct.NewDocument.html)**
 
 ````rust
 // import
@@ -584,7 +461,8 @@ println!("{:?}", new_doc);
 
 Update a document owned by the authenticated user by `id` or `path`.
 
-**Returns: [UpdatedDocument](#updateddocument)**
+**Returns: [UpdatedDocument](https://docs.rs/jsonbank/latest/jsonbank/structs/struct.UpdatedDocument.html)**
+
 
 ```rust
 let new_content = r#"{
@@ -610,6 +488,8 @@ if !res.changed {
 ### create_folder()
 
 Create a new folder.
+
+**Returns: [NewFolder](https://docs.rs/jsonbank/latest/jsonbank/structs/struct.NewFolder.html)**
 
 ```rust
 let res = match jsb.create_folder(CreateFolderBody {
