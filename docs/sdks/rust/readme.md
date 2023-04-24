@@ -439,7 +439,7 @@ Upload a new document. Behind the scenes, it reads the content from a file and u
 
 **Returns: [NewDocument](https://docs.rs/jsonbank/latest/jsonbank/structs/struct.NewDocument.html)**
 
-````rust
+```rust
 // import
 use jsonbank::structs::UploadDocumentBody;
 
@@ -463,7 +463,6 @@ Update a document owned by the authenticated user by `id` or `path`.
 
 **Returns: [UpdatedDocument](https://docs.rs/jsonbank/latest/jsonbank/structs/struct.UpdatedDocument.html)**
 
-
 ```rust
 let new_content = r#"{
     "name": "John Doe",
@@ -483,7 +482,7 @@ println!("{:?}", res);
 if !res.changed {
     println!("Document was not updated");
 }
-````
+```
 
 ### create_folder()
 
