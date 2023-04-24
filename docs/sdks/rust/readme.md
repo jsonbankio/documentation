@@ -26,14 +26,16 @@ The private api key is a **WRITE-ONLY** key used to **create/update** documents.
 
 ### Without Api Keys
 
+Using this [json file from jsonbank](https://api.jsonbank.io/f/jsonbank/sdk-test/index.json)
+
 ```rust
-use jsonbank::{JsonBank, JsonObject};
+use jsonbank::{JsonBank, JsonValue};
 
 fn main() {
     let jsb = JsonBank::new_without_config();
 
     // get public content
-    let data: JsonObject = match jsb.get_content("jsonbank/sdk-test/index.json") {
+    let data: JsonValue = match jsb.get_content("id_or_path") {
         Ok(data) => data,
         Err(err) => panic!("{:?}", err)
     };
@@ -174,6 +176,53 @@ pub struct ContentSize {
 }
 ```
 
+### AuthenticatedData
+
+This struct is returned by the [authenticate](#authenticate) method.
+
+```rust
+pub struct AuthenticatedData {
+    pub authenticated: bool,
+    pub username: String,
+    pub api_key: AuthenticatedKey,
+}
+
+pub struct AuthenticatedKey {
+    pub title: String,
+    pub projects: Vec<String>,
+}
+```
+
+### CreateDocumentBody
+
+This struct is used to create a document.
+
+```rust
+pub struct CreateDocumentBody {
+    pub name: String,
+    pub project: String,
+    pub folder: Option<String>,
+    pub content: String,
+}
+```
+
+### NewDocument
+
+This struct is returned by the [create_document](#createdocument) method.
+
+```rust
+pub struct NewDocument {
+    pub id: String,
+    pub name: String,
+    pub path: String,
+    pub project: String,
+    pub created_at: String,
+    // this field is not returned by the api
+    // it is used by the `create_document_if_not_exists` method
+    pub exists: bool,
+}
+```
+
 ## Helper Methods
 
 ### set_host()
@@ -210,17 +259,14 @@ println!("{:?}", meta);
 Get a public document `content` either by `id` or `path`.
 You have to specify [Content Type](#content-types) you are expecting.
 
-Using this [json object file from jsonbank](https://api.jsonbank.io/f/jsonbank/sdk-test/index.json)
-
 ```rust
 // get content as a JsonObject
-let data: JsonObject = match jsb.get_content("id_or_path") {
+let data: JsonValue = match jsb.get_content("id_or_path") {
     Ok(data) => data,
     Err(err) => panic!("{:?}", err)
 };
 
 println!("{:?}", data);
-println!("{:?}", data["author"]); // => "jsonbank"
 ```
 
 ### get_content_as_string()
@@ -280,8 +326,7 @@ println!("{:?}", data); // => content of the document as a String
 ### authenticate()
 
 This method is used to authenticate a user. you can use it to test if your credentials are valid.
-
-If the authentication is successful, it will return an `AuthenticatedData` struct.
+If the authentication is successful, it will return an [AuthenticatedData](#authenticateddata) struct.
 
 ```rust
 let auth = match jsb.authenticate() {
@@ -290,18 +335,6 @@ let auth = match jsb.authenticate() {
 };
 
 assert_eq!(auth.authenticated, true);
-
-// Output
-pub struct AuthenticatedData {
-    pub authenticated: bool,
-    pub username: String,
-    pub api_key: AuthenticatedKey,
-}
-
-pub struct AuthenticatedKey {
-    pub title: String,
-    pub projects: Vec<String>,
-}
 ```
 
 ### is_authenticated()
@@ -347,6 +380,8 @@ When using `path` to identify a document, the `username` is not required because
 Get information about a document without the content.
 To get the content, use [get_own_content](#getowncontent) method.
 
+**Returns: [DocumentMeta](#documentmeta)**
+
 ```rust
 let meta = match jsb.get_own_content_meta("sdk-test/index.json") {
     Ok(meta) => meta,
@@ -354,19 +389,117 @@ let meta = match jsb.get_own_content_meta("sdk-test/index.json") {
 };
 
 println!("{:?}", meta);
+println!("{:?}", meta.path); // => file path
+```
 
-// Output
-pub struct DocumentMeta {
-    pub id: String,
-    pub project: String,
-    pub path: String,
-    pub content_size: ContentSize,
-    pub updated_at: String,
-    pub created_at: String,
-}
+### get_own_content()
 
-pub struct ContentSize {
-    pub number: u64,
-    pub string: String,
+Get a document `content` either by `id` or `path`.
+You have to specify [Content Type](#content-types) you are expecting.
+
+```rust
+use jsonbank::{JsonObject, JsonArray, JsonValue};
+
+// get content as a JsonObject
+let data: JsonObject = match jsb.get_own_content("id_or_path") {
+    Ok(data) => data,
+    Err(err) => panic!("{:?}", err)
+};
+
+println!("Object: {:?}", data);
+
+// get content as a JsonArray
+let data: JsonArray = match jsb.get_own_content("id_or_path") {
+    Ok(data) => data,
+    Err(err) => panic!("{:?}", err)
+};
+
+println!("Array: {:?}", data);
+
+
+// get content as a JsonValue
+let data: JsonValue = match jsb.get_own_content("id_or_path") {
+    Ok(data) => data,
+    Err(err) => panic!("{:?}", err)
+};
+
+println!("Value: {:?}", data);
+```
+
+### get_own_content_as_string()
+
+Same as [get_own_content](#getowncontent) but returns the content as a `String` type.
+
+```rust
+// get content as a String
+let data: String = match jsb.get_own_content_as_string("id_or_path") {
+    Ok(data) => data,
+    Err(err) => panic!("{:?}", err)
+};
+```
+
+### has_own_document()
+
+Check if a document exists using `id` or `path`.
+
+**Returns: `bool`**
+
+```rust
+let has_doc = match jsb.has_own_document("id_or_path") {
+    Ok(has_doc) => has_doc,
+    Err(err) => panic!("{:?}", err)
+};
+
+println!("{:?}", has_doc); // => true or false
+```
+
+### create_document()
+
+This method is used to create a new document.
+
+**Returns: [NewDocument](#newdocument)**
+
+```rust
+let new_doc_body = CreateDocumentBody {
+    name: "new_doc.json".to_string(),
+    project: "your_project".to_string(),
+    content: "[1, 2, 3]".to_string(),
+    folder: None, // or Some("path/to/folder".to_string())
+};
+
+let new_doc = match jsb.create_document(&new_doc_body) {
+    Ok(new_doc) => new_doc,
+    Err(err) => panic!("{:?}", err)
+};
+
+println!("{:?}", new_doc);
+```
+
+### create_document_if_not_exists()
+
+This method creates a new document if it does not exist by first creating a new document then check error to see if the document already exists. before fetching the document. So it's a create or get method.
+
+It returns same struct as [create_document](#createdocument) method but with the `exists` field set to `true` if the document already exists.
+
+**Returns: [NewDocument](#newdocument)**
+
+```rust
+let new_doc_body = CreateDocumentBody {
+    name: "new_doc.json".to_string(),
+    project: "your_project".to_string(),
+    content: "[1, 2, 3]".to_string(),
+    folder: None, // or Some("path/to/folder".to_string())
+};
+
+let new_doc = match jsb.create_document_if_not_exists(&new_doc_body) {
+    Ok(new_doc) => new_doc,
+    Err(err) => panic!("{:?}", err)
+};
+
+println!("{:?}", new_doc);
+
+// check if the document already exists
+if new_doc.exists {
+println!("Document already exists");
 }
 ```
