@@ -167,7 +167,7 @@ use jsonbank::structs::{DocumentMeta, AuthenticatedData};
 
 ### DocumentMeta
 
-This struct is returned by the [get_document_meta](#getdocumentmeta) & [get_own_document_meta](#getowndocumentmeta)
+This struct is returned by the [get_document_meta](#getdocumentmeta) & [get_own_document_meta](#getowncontentmeta)
 methods..
 
 ```rust
@@ -205,7 +205,7 @@ pub struct AuthenticatedKey {
 
 ### CreateDocumentBody
 
-This struct is used to create a document.
+This struct is used by the [create_document](#createdocument) method to create a new document.
 
 ```rust
 pub struct CreateDocumentBody {
@@ -213,6 +213,21 @@ pub struct CreateDocumentBody {
     pub project: String,
     pub folder: Option<String>,
     pub content: String,
+}
+```
+
+### UploadDocumentBody
+
+This struct is used by the [upload_document](#uploaddocument) method to upload a new document.
+
+```rust
+pub struct UploadDocumentBody {
+    pub file_path: String,
+    pub project: String,
+    // Name is optional, if not provided, the file name will be used
+    pub name: Option<String>,
+    // Folder is optional, if not provided, the document will be created at the root of the project
+    pub folder: Option<String>,
 }
 ```
 
@@ -235,15 +250,29 @@ pub struct NewDocument {
 
 ### UpdatedDocument
 
-This struct is returned by the [update_document](#updatedocument) method.
+This struct is returned by the [update_document](#updateddocument) method.
 
-The `changed` field is true if the document was updated and false if it was not.
+The `changed` field is true if the document was updated and false if it wasn't.
 The document will not be updated if the content is the same.
 
-````rust
+```rust
 pub struct UpdatedDocument {
     pub changed: bool,
 }
+```
+
+### CreateFolderBody
+
+This struct is used by the [create_folder](#createfolder) method to create a new folder.
+
+```rust
+pub struct CreateFolderBody {
+    pub name: String,
+    pub project: String,
+    // folder is optional, if not provided, the folder will be created at the root of the project
+    pub folder: Option<String>,
+}
+```
 
 ## Helper Methods
 
@@ -253,7 +282,7 @@ Set the host to use for the api calls. By default it is set to `https://api.json
 
 ```rust
 jsb.set_host("https://api.jsonbank.io");
-````
+```
 
 ## Public Content Methods
 
@@ -499,7 +528,8 @@ println!("{:?}", new_doc);
 
 ### create_document_if_not_exists()
 
-This method creates a new document if it does not exist by first creating a new document then check error to see if the document already exists. before fetching the document. So it's a create or get method.
+This method creates a new document if it doesn't exist by first creating a new document then check error to see if the document already exists.
+Before fetching the document.
 
 It returns same struct as [create_document](#createdocument) method but with the `exists` field set to `true` if the document already exists.
 
@@ -524,6 +554,30 @@ println!("{:?}", new_doc);
 if new_doc.exists {
     println!("Document already exists");
 }
+```
+
+### upload_document()
+
+Upload a new document. Behind the scenes, it reads the content from a file and uses the [create_document](#createdocument) method to create the document.
+
+**Returns: [NewDocument](#newdocument)**
+
+````rust
+// import
+use jsonbank::structs::UploadDocumentBody;
+
+// code
+let new_doc = match jsb.upload_document(UploadDocumentBody {
+    file_path: "path/to/file.json".to_string(),
+    project: "your_project".to_string(),
+    name: None, // or Some("new_doc.json".to_string())
+    folder: None, // or Some("path/to/folder".to_string())
+}) {
+    Ok(doc) => doc,
+    Err(err) => panic!("{:?}", err),
+};
+
+println!("{:?}", new_doc);
 ```
 
 ### update_own_document()
@@ -551,4 +605,21 @@ println!("{:?}", res);
 if !res.changed {
     println!("Document was not updated");
 }
+````
+
+### create_folder()
+
+Create a new folder.
+
+```rust
+let res = match jsb.create_folder(CreateFolderBody {
+    name: "folder".to_string(),
+    project: data.project.clone(),
+    folder: None,
+}) {
+    Ok(res) => res,
+    Err(err) => panic!("{:?}", err),
+};
+
+println!("{:?}", res);
 ```
