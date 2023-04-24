@@ -155,6 +155,16 @@ assert_eq!(content[2].as_object().unwrap()["name"], "github-test-array.json");
 
 The following structs are structs you should know and will be referenced in the examples.
 
+They can be imported from the `jsonbank` crate.
+
+```rust
+//  import all
+use jsonbank::structs::*;
+
+// import specific structs
+use jsonbank::structs::{DocumentMeta, AuthenticatedData};
+```
+
 ### DocumentMeta
 
 This struct is returned by the [get_document_meta](#getdocumentmeta) & [get_own_document_meta](#getowndocumentmeta)
@@ -223,6 +233,18 @@ pub struct NewDocument {
 }
 ```
 
+### UpdatedDocument
+
+This struct is returned by the [update_document](#updatedocument) method.
+
+The `changed` field is true if the document was updated and false if it was not.
+The document will not be updated if the content is the same.
+
+````rust
+pub struct UpdatedDocument {
+    pub changed: bool,
+}
+
 ## Helper Methods
 
 ### set_host()
@@ -231,7 +253,7 @@ Set the host to use for the api calls. By default it is set to `https://api.json
 
 ```rust
 jsb.set_host("https://api.jsonbank.io");
-```
+````
 
 ## Public Content Methods
 
@@ -467,7 +489,7 @@ let new_doc_body = CreateDocumentBody {
     folder: None, // or Some("path/to/folder".to_string())
 };
 
-let new_doc = match jsb.create_document(&new_doc_body) {
+let new_doc = match jsb.create_document(new_doc_body) {
     Ok(new_doc) => new_doc,
     Err(err) => panic!("{:?}", err)
 };
@@ -491,7 +513,7 @@ let new_doc_body = CreateDocumentBody {
     folder: None, // or Some("path/to/folder".to_string())
 };
 
-let new_doc = match jsb.create_document_if_not_exists(&new_doc_body) {
+let new_doc = match jsb.create_document_if_not_exists(new_doc_body) {
     Ok(new_doc) => new_doc,
     Err(err) => panic!("{:?}", err)
 };
@@ -500,6 +522,33 @@ println!("{:?}", new_doc);
 
 // check if the document already exists
 if new_doc.exists {
-println!("Document already exists");
+    println!("Document already exists");
+}
+```
+
+### update_own_document()
+
+Update a document owned by the authenticated user by `id` or `path`.
+
+**Returns: [UpdatedDocument](#updateddocument)**
+
+```rust
+let new_content = r#"{
+    "name": "John Doe",
+    "age": 30,
+    "city": "New York"
+}"#;
+
+let res = match jsb.update_own_document("id_or_path", newContent.to_string()) {
+    Ok(updated_doc) => updated_doc,
+    Err(err) => panic!("{:?}", err)
+};
+
+println!("{:?}", res);
+
+
+// check if the document was updated
+if !res.changed {
+    println!("Document was not updated");
 }
 ```
