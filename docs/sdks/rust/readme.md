@@ -1,6 +1,6 @@
 # Rust SDK
 
-[github](https://github.com/jsonbankio/rust-sdk) | [crates.io](https://crates.io/crates/jsonbank)
+[github](https://github.com/jsonbankio/rust-sdk) | [crates.io](https://crates.io/crates/jsonbank) | [docs.rs](https://docs.rs/jsonbank/latest/jsonbank)
 
 ## Installation
 
